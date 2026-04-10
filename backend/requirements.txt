@@ -1,0 +1,15 @@
+Flask
+Flask-CORS
+pymongo
+PyJWT
+xgboost
+catboost
+scikit-learn
+pandas
+numpy
+joblib
+requests
+python-dotenv
+bcrypt
+gunicorn
+Flask-Limiter
