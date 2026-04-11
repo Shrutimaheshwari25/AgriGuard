@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
-from utils.db import get_db
-from utils.auth_utils import generate_tokens, token_required, verify_refresh_token
-from utils.limiter import limiter
+from backend.utils.db import get_db
+from backend.utils.auth_utils import generate_tokens, token_required, verify_refresh_token
+from backend.utils.limiter import limiter
 import bcrypt
 
 auth_bp = Blueprint('auth', __name__)

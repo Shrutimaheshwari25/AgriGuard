@@ -2,13 +2,13 @@ import os
 import joblib
 import pandas as pd
 from flask import Blueprint, request, jsonify
-from utils.auth_utils import token_required
-from utils.db import get_db
+from backend.utils.auth_utils import token_required
+from backend.utils.db import get_db
 import requests
 import datetime
 import numpy as np
 import time
-from utils.limiter import limiter
+from backend.utils.limiter import limiter
 
 predict_bp = Blueprint('predict', __name__)
 

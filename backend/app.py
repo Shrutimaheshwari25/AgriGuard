@@ -18,7 +18,7 @@ CORS(app)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'supersecretkey')
 app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/smartcrop')
 
-from utils.limiter import limiter
+from backend.utils.limiter import limiter
 limiter.init_app(app)
 
 # Register Blueprints
