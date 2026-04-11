@@ -22,10 +22,10 @@ from backend.utils.limiter import limiter
 limiter.init_app(app)
 
 # Register Blueprints
-from routes.auth import auth_bp
-from routes.predict import predict_bp
-from routes.weather import weather_bp
-from routes.dashboard import dashboard_bp
+from backend.routes.auth import auth_bp
+from backend.routes.predict import predict_bp
+from backend.routes.weather import weather_bp
+from backend.routes.dashboard import dashboard_bp
 
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(predict_bp, url_prefix='/api/predict')
