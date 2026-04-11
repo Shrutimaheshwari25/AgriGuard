@@ -8,7 +8,7 @@ import illustration from './assets/illustration.png';
 import bg from './assets/bg.png';
 import dashboardBg from './assets/dashboard_bg.png';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://agri-backend-hevj.onrender.com/api';
 
 axios.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
@@ -52,7 +52,7 @@ const Navbar = ({ onLogout, token, theme, toggleTheme }) => {
   
   const toggleLanguage = () => {
     const nextLng = i18n.language === 'en' ? 'hi' : 'en';
-    i18n.changeLanguage(nextLng);
+    i18n.changeLanguhttp;
   };
 
   return (
