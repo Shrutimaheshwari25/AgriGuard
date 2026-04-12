@@ -13,3 +13,4 @@ python-dotenv
 bcrypt
 gunicorn
 Flask-Limiter
+flask-pymongo
