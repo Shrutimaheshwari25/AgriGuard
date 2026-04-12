@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify
-from backend.utils.db import get_db
-from backend.utils.auth_utils import generate_tokens, token_required, verify_refresh_token
-from backend.utils.limiter import limiter
+from utils.db import get_db
+from utils.auth_utils import generate_tokens, token_required, verify_refresh_token
+from utils.limiter import limiter
 import bcrypt
+import logging
 
+logger = logging.getLogger(__name__)
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/register', methods=['POST'])
@@ -36,21 +38,36 @@ def register():
 @auth_bp.route('/login', methods=['POST'])
 @limiter.limit("10 per minute")
 def login():
-    data = request.get_json(silent=True) or {}
-    username = data.get('username')
-    password = data.get('password')
+    try:
+        data = request.get_json(silent=True) or {}
+        username = data.get('username')
+        password = data.get('password')
 
-    if not username or not password:
-        return jsonify({'message': 'Missing credentials'}), 400
+        logger.info(f"Login attempt: username={username}")
 
-    db = get_db()
-    user = db.users.find_one({'$or': [{'username': username}, {'email': username}]})
+        if not username or not password:
+            logger.warning("Login failed: Missing credentials")
+            return jsonify({'message': 'Missing credentials'}), 400
 
-    if not user or not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
-        return jsonify({'message': 'Invalid credentials'}), 401
+        db = get_db()
+        user = db.users.find_one({'$or': [{'username': username}, {'email': username}]})
 
-    access_token, refresh_token = generate_tokens(str(user['_id']))
-    return jsonify({'token': access_token, 'refresh_token': refresh_token, 'username': user['username']}), 200
+        if not user:
+            logger.warning(f"Login failed: User '{username}' not found")
+            return jsonify({'message': 'Invalid credentials'}), 401
+
+        # Check password
+        is_valid = bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8'))
+        if not is_valid:
+            logger.warning(f"Login failed: Invalid password for user '{username}'")
+            return jsonify({'message': 'Invalid credentials'}), 401
+
+        access_token, refresh_token = generate_tokens(str(user['_id']))
+        logger.info(f"Login successful: user={username}")
+        return jsonify({'token': access_token, 'refresh_token': refresh_token, 'username': user['username']}), 200
+    except Exception as e:
+        logger.error(f"Login error: {str(e)}", exc_info=True)
+        return jsonify({'message': 'Server error during login'}), 500
 
 @auth_bp.route('/refresh', methods=['POST'])
 @limiter.limit("10 per minute")

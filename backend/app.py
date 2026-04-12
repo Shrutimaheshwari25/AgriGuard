@@ -1,8 +1,12 @@
 import os
+import sys
 import logging
 from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
+
+# Add backend directory to path
+sys.path.insert(0, os.path.dirname(__file__))
 
 # Load env variables
 load_dotenv()
@@ -16,17 +20,16 @@ app = Flask(__name__)
 CORS(app)
 
 app.config['SECRET_KEY'] = "shruti_agri_project_2026_secure"
-# app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/smartcrop')
-app.config['MONGO_URI'] = "mongodb+srv://shruti:abc123@cluster0.xxxxx.mongodb.net/agri_db?retryWrites=true&w=majority"
+app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/agri_db')
 
-from backend.utils.limiter import limiter
+from utils.limiter import limiter
 limiter.init_app(app)
 
 # Register Blueprints
-from backend.routes.auth import auth_bp
-from backend.routes.predict import predict_bp
-from backend.routes.weather import weather_bp
-from backend.routes.dashboard import dashboard_bp
+from routes.auth import auth_bp
+from routes.predict import predict_bp
+from routes.weather import weather_bp
+from routes.dashboard import dashboard_bp
 
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(predict_bp, url_prefix='/api/predict')

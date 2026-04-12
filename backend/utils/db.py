@@ -7,7 +7,7 @@ _indices_created = False
 def get_db():
     global _indices_created
     client = MongoClient(current_app.config['MONGO_URI'])
-    db = client["agri_db"]
+    db = client.get_default_database()
     
     if not _indices_created:
         try:

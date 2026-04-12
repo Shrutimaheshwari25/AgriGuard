@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request, Response
 import csv
 import io
-from backend.utils.auth_utils import token_required
-from backend.utils.db import get_db
+from utils.auth_utils import token_required
+from utils.db import get_db
 
 dashboard_bp = Blueprint('dashboard', __name__)
 

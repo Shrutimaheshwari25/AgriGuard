@@ -3,7 +3,7 @@ import os
 import requests
 import random
 import time
-from backend.utils.limiter import limiter
+from utils.limiter import limiter
 
 weather_bp = Blueprint('weather', __name__)
 
