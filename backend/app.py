@@ -13,10 +13,11 @@ logger = logging.getLogger(__name__)
 
 # Initialize Flask App
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'supersecretkey')
-app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/smartcrop')
+app.config['SECRET_KEY'] = "shruti_agri_project_2026_secure"
+# app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/smartcrop')
+app.config['MONGO_URI'] = "mongodb+srv://shruti:abc123@cluster0.xxxxx.mongodb.net/agri_db?retryWrites=true&w=majority"
 
 from backend.utils.limiter import limiter
 limiter.init_app(app)
