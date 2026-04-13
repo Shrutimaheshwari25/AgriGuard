@@ -14,3 +14,4 @@ bcrypt
 gunicorn
 Flask-Limiter
 flask-pymongo
+dnspython
