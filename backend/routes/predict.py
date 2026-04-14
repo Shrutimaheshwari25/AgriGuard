@@ -63,7 +63,7 @@ def fetch_crop_info_from_wiki(crop_name):
         "User-Agent": "SmartCropApp/1.0 (https://github.com/example/react-flask)"
     }
     try:
-        response = requests.get(url, headers=headers, timeout=4)
+        response = requests.get(url, headers=headers, timeout=2)
         if response.status_code == 200:
             data = response.json()
             return {
