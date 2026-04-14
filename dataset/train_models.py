@@ -14,36 +14,56 @@ models_dir = os.path.join(os.path.dirname(__file__), '..', 'backend', 'models')
 os.makedirs(models_dir, exist_ok=True)
 
 def generate_synthetic_data():
-    """Generates a synthetic Crop Recommendation dataset similar to the Kaggle one."""
-    print("Generating synthetic crop dataset...")
+    """Generates a synthetic Crop Recommendation dataset for 22 crops."""
+    print("Generating comprehensive synthetic crop dataset (22 crops)...")
     np.random.seed(42)
-    crops = ['rice', 'maize', 'chickpea', 'kidneybeans', 'pigeonpeas',
-             'mothbeans', 'mungbean', 'blackgram', 'lentil', 'cotton', 'jute', 'coffee']
+    
+    # Expert Profiles (N, P, K, Temp, Hum, pH, Rain)
+    profiles = {
+        'rice': (100, 95, 20, 32, 65, 5.2, 65),
+        'maize': (10, 40, 170, 34, 45, 8.4, 80),
+        'chickpea': (105, 63, 160, 22, 44, 8.0, 205),
+        'kidneybeans': (55, 52, 120, 35, 62, 4.9, 215),
+        'pigeonpeas': (65, 60, 185, 16, 50, 6.5, 220),
+        'mothbeans': (18, 31, 128, 16, 31, 8.8, 268),
+        'mungbean': (60, 48, 180, 40, 35, 6.8, 270),
+        'blackgram': (110, 87, 127, 31, 88, 8.5, 272),
+        'lentil': (106, 77, 94, 29, 59, 7.9, 23),
+        'cotton': (105, 54, 119, 25, 85, 5.4, 165),
+        'jute': (10, 110, 82, 38, 59, 6.0, 63),
+        'coffee': (72, 34, 9, 15, 36, 6.9, 27),
+        'pomegranate': (40, 18, 40, 28, 55, 7.0, 50),
+        'banana': (100, 80, 50, 26, 80, 6.2, 225),
+        'mango': (30, 30, 30, 27, 50, 6.0, 100),
+        'grapes': (25, 130, 20, 22, 82, 6.5, 70),
+        'watermelon': (50, 15, 50, 26, 85, 6.4, 50),
+        'muskmelon': (90, 15, 50, 28, 92, 6.7, 25),
+        'apple': (20, 130, 190, 23, 92, 5.8, 110),
+        'orange': (20, 15, 10, 23, 95, 6.5, 110),
+        'papaya': (50, 55, 50, 28, 95, 6.7, 150),
+        'coconut': (20, 15, 30, 28, 95, 6.0, 150)
+    }
     
     data = []
-    for crop in crops:
-        # Base stats per crop (approximate logic for synthetic generation)
-        base_n = np.random.randint(0, 120)
-        base_p = np.random.randint(5, 140)
-        base_k = np.random.randint(5, 200)
-        base_temp = np.random.uniform(15, 40)
-        base_hum = np.random.uniform(14, 100)
-        base_ph = np.random.uniform(4.5, 9.0)
-        base_rain = np.random.uniform(20, 298)
-        
-        for _ in range(100):
-            n = max(0, min(140, base_n + np.random.normal(0, 10)))
-            p = max(5, min(145, base_p + np.random.normal(0, 10)))
-            k = max(5, min(205, base_k + np.random.normal(0, 10)))
-            temp = max(8, min(45, base_temp + np.random.normal(0, 2)))
-            hum = max(10, min(100, base_hum + np.random.normal(0, 5)))
-            ph = max(3.5, min(9.9, base_ph + np.random.normal(0, 0.5)))
-            rain = max(10, min(300, base_rain + np.random.normal(0, 15)))
+    for crop, (bN, bP, bK, bT, bH, bPH, bR) in profiles.items():
+        for _ in range(120): # Increased sample size to 120 per crop
+            n = max(0, min(140, bN + np.random.normal(0, 8)))
+            p = max(5, min(145, bP + np.random.normal(0, 8)))
+            k = max(5, min(205, bK + np.random.normal(0, 8)))
+            temp = max(5, min(50, bT + np.random.normal(0, 1.5)))
+            hum = max(5, min(100, bH + np.random.normal(0, 4)))
+            ph = max(3.0, min(10.0, bPH + np.random.normal(0, 0.4)))
+            rain = max(5, min(400, bR + np.random.normal(0, 10)))
             
             data.append([n, p, k, temp, hum, ph, rain, crop])
 
     df = pd.DataFrame(data, columns=['N', 'P', 'K', 'temperature', 'humidity', 'ph', 'rainfall', 'label'])
-    df.to_csv(os.path.join(os.path.dirname(__file__), 'synthetic_crop_data.csv'), index=False)
+    csv_path = os.path.join(os.path.dirname(__file__), 'synthetic_crop_data.csv')
+    df.to_csv(csv_path, index=False)
+    
+    # Save descriptive stats for reference
+    df.groupby('label').mean().to_csv(os.path.join(os.path.dirname(__file__), 'stats.txt'), sep='\t')
+    
     return df
 
 if __name__ == "__main__":

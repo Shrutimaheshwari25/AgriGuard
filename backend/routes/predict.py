@@ -51,9 +51,26 @@ CROP_GEO_DICT = {
 WIKI_TITLE_MAP = {
     "blackgram": "Vigna_mungo",
     "kidneybeans": "Kidney_bean",
-    "mothbeans": "Moth_bean",
-    "mungbean": "Mung_bean",
-    "pigeonpeas": "Pigeon_pea"
+    "mothbeans": "Vigna_aconitifolia",
+    "mungbean": "Vigna_radiata",
+    "pigeonpeas": "Cajanus_cajan",
+    "chickpea": "Chickpea",
+    "muskmelon": "Muskmelon",
+    "watermelon": "Watermelon",
+    "pomegranate": "Pomegranate",
+    "banana": "Banana",
+    "mango": "Mango",
+    "grapes": "Grape",
+    "apple": "Apple",
+    "orange": "Orange_(fruit)",
+    "papaya": "Papaya",
+    "coconut": "Coconut",
+    "cotton": "Cotton",
+    "jute": "Jute",
+    "coffee": "Coffee",
+    "rice": "Rice",
+    "maize": "Maize",
+    "lentil": "Lentil"
 }
 
 def fetch_crop_info_from_wiki(crop_name):
